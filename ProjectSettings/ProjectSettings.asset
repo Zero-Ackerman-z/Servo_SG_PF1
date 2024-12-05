@@ -731,23 +731,23 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: BCG_SGS
-    EmbeddedLinux: BCG_SGS
+    Android: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
+    EmbeddedLinux: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
     GameCoreScarlett: BCG_SGS
-    GameCoreXboxOne: BCG_SGS
+    GameCoreXboxOne: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
     LinuxHeadlessSimulation: BCG_SGS
-    Nintendo Switch: BCG_SGS
-    PS4: BCG_SGS
-    PS5: BCG_SGS
-    QNX: BCG_SGS
-    Stadia: BCG_SGS
-    Standalone: BCG_SGS
-    VisionOS: BCG_SGS
-    WebGL: BCG_SGS
+    Nintendo Switch: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
+    PS4: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
+    PS5: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
+    QNX: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
+    Stadia: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
+    Standalone: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
+    VisionOS: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
+    WebGL: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
     Windows Store Apps: BCG_SGS
-    XboxOne: BCG_SGS
+    XboxOne: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
     iPhone: BCG_SGS
-    tvOS: BCG_SGS
+    tvOS: BCG_SGS;UNITY_POST_PROCESSING_STACK_V2
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

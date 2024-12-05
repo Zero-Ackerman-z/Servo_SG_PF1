@@ -4,12 +4,9 @@ public class VehicleController : MonoBehaviour
 {
 
     [Header("Movement Settings")]
-    public float moveSpeed = 10f; // Velocidad de movimiento hacia adelante/atrás
-    public float turnSpeed = 50f; // Velocidad de giro
-
-    //[Header("Wheel Settings (Optional)")]
-    //public Transform[] wheels; // Ruedas que girarán visualmente
-    //public float wheelRotationSpeed = 360f; // Velocidad de rotación de las ruedas
+    public float moveSpeed = 10f;
+    public float turnSpeed = 70f; 
+    [Header("Wheel Settings (Optional)")]
 
     private float forwardInput;
     private float turnInput;
@@ -17,7 +14,6 @@ public class VehicleController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-
        
     }
     void Update()
@@ -28,10 +24,7 @@ public class VehicleController : MonoBehaviour
         MoveVehicle();
         TurnVehicle();
 
-        //if (wheels != null && wheels.Length > 0)
-        //{
-        //    RotateWheels();
-        //}
+       
     }
 
     private void MoveVehicle()
@@ -44,14 +37,5 @@ public class VehicleController : MonoBehaviour
         transform.Rotate(Vector3.up, turnInput * turnSpeed * Time.deltaTime);
     }
 
-    //private void RotateWheels()
-    //{
-    //    foreach (Transform wheel in wheels)
-    //    {
-    //        if (forwardInput != 0)
-    //        {
-    //            wheel.Rotate(Vector3.right, forwardInput * wheelRotationSpeed * Time.deltaTime);
-    //        }
-    //    }
-    //}
+
 }
