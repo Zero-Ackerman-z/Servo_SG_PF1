@@ -140,17 +140,44 @@ public class UDPManager : MonoBehaviour
     {
         Vector3 forward = vehicle.forward;
 
-        float angleX = Vector3.SignedAngle(Vector3.forward, forward, Vector3.right); // Rotación en el eje X
-        float angleY = Vector3.SignedAngle(Vector3.forward, forward, Vector3.up);    // Rotación en el eje Y
-        float angleZ = Vector3.SignedAngle(Vector3.forward, forward, Vector3.forward); // Rotación en el eje Z
+        float angleX = Vector3.SignedAngle(Vector3.forward, forward, Vector3.right);  
+        float angleY = Vector3.SignedAngle(Vector3.forward, forward, Vector3.up);     
+        float angleZ = Vector3.SignedAngle(Vector3.forward, forward, Vector3.forward); 
 
-        A = Mathf.Lerp(A, angleX + 100, Time.deltaTime * SmoothEngine); // Suaviza el valor de A con la rotación X
-        B = Mathf.Lerp(B, angleY + 100, Time.deltaTime * SmoothEngine); // Suaviza el valor de B con la rotación Y
-        C = Mathf.Lerp(C, angleZ + 100, Time.deltaTime * SmoothEngine); // Suaviza el valor de C con la rotación Z
+        A = Mathf.Lerp(A, angleX + 100, Time.deltaTime * SmoothEngine);
+        B = Mathf.Lerp(B, angleY + 100, Time.deltaTime * SmoothEngine);
+        C = Mathf.Lerp(C, angleZ + 100, Time.deltaTime * SmoothEngine);
 
-        A = Mathf.Clamp(A, 0, 200);
-        B = Mathf.Clamp(B, 0, 200);
-        C = Mathf.Clamp(C, 0, 200);
+        A = Mathf.Clamp(A, 0, 250);
+        B = Mathf.Clamp(B, 0, 250);
+        C = Mathf.Clamp(C, 0, 250);
+
+        if (angleX > 200)
+        {
+            A = Mathf.Lerp(A, Mathf.Clamp(C + angleX * 10, 0, 250), Time.deltaTime * SmoothEngine);
+        }
+        else if (angleX < 0)
+        {
+            A = Mathf.Lerp(A, Mathf.Clamp(C - angleX * 10, 0, 250), Time.deltaTime * SmoothEngine);
+        }
+
+        if (angleZ > 200)
+        {
+            B = Mathf.Lerp(B, Mathf.Clamp(B + angleZ * 10, 0, 250), Time.deltaTime * SmoothEngine);
+        }
+        else if (angleZ < 0)
+        {
+            B = Mathf.Lerp(B, Mathf.Clamp(B - angleZ * 10, 0, 250), Time.deltaTime * SmoothEngine);
+        }
+
+        if (angleZ > 200)
+        {
+            C = Mathf.Lerp(B, Mathf.Clamp(B + angleZ * 10, 0, 250), Time.deltaTime * SmoothEngine);
+        }
+        else if (angleZ < 0)
+        {
+            C = Mathf.Lerp(B, Mathf.Clamp(B - angleZ * 10, 0, 250), Time.deltaTime * SmoothEngine);
+        }
     }
 
     void FixedUpdate()
