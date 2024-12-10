@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using TMPro;
 using UnityEngine.UI;
 using Slider = UnityEngine.UI.Slider;
 
@@ -15,17 +16,17 @@ public class UDPManager : MonoBehaviour
 
     private string IP;  // define in init
     public int port;  // define in init
-    public Text engineA;
-    public Text engineAHex;
-    public Slider sliderA;
-    public Text engineB;
-    public Text engineBHex;
-    public Slider sliderB;
-    public Text engineC;
-    public Text engineCHex;
-    public Slider sliderC;
+    //public TextMeshProUGUI engineA;
+    //public TextMeshProUGUI engineAHex;
+    //public Slider sliderA;
+    //public TextMeshProUGUI engineB;
+    //public TextMeshProUGUI engineBHex;
+    //public Slider sliderB;
+    //public TextMeshProUGUI engineC;
+    //public TextMeshProUGUI engineCHex;
+    //public Slider sliderC;
 
-    public Text Data;
+    public TextMeshProUGUI Data;
 
     UdpClient client;
 
@@ -75,26 +76,30 @@ public class UDPManager : MonoBehaviour
         B = 125;
         C = 125;
 
-        sliderA.value = A;
-        sliderB.value = B;
-        sliderC.value = C;
+        //sliderA.value = A;
+        //sliderB.value = B;
+        //sliderC.value = C;
 
         string HexA = DecToHexMove(A);
         string HexB = DecToHexMove(B);
         string HexC = DecToHexMove(C);
 
-        engineAHex.text = "Engine A: " + HexA;
-        engineBHex.text = "Engine B: " + HexB;
-        engineCHex.text = "Engine C: " + HexC;
+        //engineAHex.text = "Engine A: " + HexA;
+        //engineBHex.text = "Engine B: " + HexB;
+        //engineCHex.text = "Engine C: " + HexC;
+
+        Debug.Log("Engine A: " + HexA);
+        Debug.Log("Engine B: " + HexB);
+        Debug.Log("Engine C: " + HexC); 
 
         mUDPDATA.mAppDataField.PlayMotorC = HexC;
         mUDPDATA.mAppDataField.PlayMotorA = HexA;
         mUDPDATA.mAppDataField.PlayMotorB = HexB;
 
 
-        engineA.text = ((int)sliderA.value).ToString();
-        engineB.text = ((int)sliderB.value).ToString();
-        engineC.text = ((int)sliderC.value).ToString();
+        //engineA.text = ((int)sliderA.value).ToString();
+        //engineB.text = ((int)sliderB.value).ToString();
+        //engineC.text = ((int)sliderC.value).ToString();
 
         Data.text = "Data: " + mUDPDATA.GetToString();
 
@@ -133,10 +138,19 @@ public class UDPManager : MonoBehaviour
 
     void CalcularRotacion()
     {
+        Vector3 forward = vehicle.forward;
 
-        // TIENES QUE SEGUIR PROGRAMANDO ACAAAAAAAAAAAAAA
+        float angleX = Vector3.SignedAngle(Vector3.forward, forward, Vector3.right); // Rotación en el eje X
+        float angleY = Vector3.SignedAngle(Vector3.forward, forward, Vector3.up);    // Rotación en el eje Y
+        float angleZ = Vector3.SignedAngle(Vector3.forward, forward, Vector3.forward); // Rotación en el eje Z
 
+        A = Mathf.Lerp(A, angleX + 100, Time.deltaTime * SmoothEngine); // Suaviza el valor de A con la rotación X
+        B = Mathf.Lerp(B, angleY + 100, Time.deltaTime * SmoothEngine); // Suaviza el valor de B con la rotación Y
+        C = Mathf.Lerp(C, angleZ + 100, Time.deltaTime * SmoothEngine); // Suaviza el valor de C con la rotación Z
 
+        A = Mathf.Clamp(A, 0, 200);
+        B = Mathf.Clamp(B, 0, 200);
+        C = Mathf.Clamp(C, 0, 200);
     }
 
     void FixedUpdate()
@@ -146,26 +160,31 @@ public class UDPManager : MonoBehaviour
 
             CalcularRotacion();
 
-            sliderA.value = A;
-            sliderB.value = B;
-            sliderC.value = C;
+            //sliderA.value = A;
+            //sliderB.value = B;
+            //sliderC.value = C;
 
             string HexA = DecToHexMove(A);
             string HexB = DecToHexMove(B);
             string HexC = DecToHexMove(C);
 
-            engineAHex.text = "Engine A: " + HexA;
-            engineBHex.text = "Engine B: " + HexB;
-            engineCHex.text = "Engine C: " + HexC;
+            //engineAHex.text = "Engine A: " + HexA;
+            //engineBHex.text = "Engine B: " + HexB;
+            //engineCHex.text = "Engine C: " + HexC;
+
+            Debug.Log("Cadena Hexadecimal A: " + HexA);
+            Debug.Log("Cadena Hexadecimal B: " + HexB);
+            Debug.Log("Cadena Hexadecimal C: " + HexC);
+
 
             mUDPDATA.mAppDataField.PlayMotorC = HexC;
             mUDPDATA.mAppDataField.PlayMotorA = HexA;
             mUDPDATA.mAppDataField.PlayMotorB = HexB;
 
 
-            engineA.text = ((int)sliderA.value).ToString();
-            engineB.text = ((int)sliderB.value).ToString();
-            engineC.text = ((int)sliderC.value).ToString();
+            //engineA.text = ((int)sliderA.value).ToString();
+            //engineB.text = ((int)sliderB.value).ToString();
+            //engineC.text = ((int)sliderC.value).ToString();
 
             Data.text = "Data: " + mUDPDATA.GetToString();
 

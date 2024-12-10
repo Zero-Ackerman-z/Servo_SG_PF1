@@ -84,7 +84,3 @@ public class AppControlField
         return ConfirmCode + PassCode + FunctionCode + ObjectChannel;
     }
 }
-
-
-
-
