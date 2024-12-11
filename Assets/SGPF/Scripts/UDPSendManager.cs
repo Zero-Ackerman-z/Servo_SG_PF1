@@ -16,15 +16,15 @@ public class UDPManager : MonoBehaviour
 
     private string IP;  // define in init
     public int port;  // define in init
-    //public TextMeshProUGUI engineA;
-    //public TextMeshProUGUI engineAHex;
-    //public Slider sliderA;
-    //public TextMeshProUGUI engineB;
-    //public TextMeshProUGUI engineBHex;
-    //public Slider sliderB;
-    //public TextMeshProUGUI engineC;
-    //public TextMeshProUGUI engineCHex;
-    //public Slider sliderC;
+    public TextMeshProUGUI engineA;
+    public TextMeshProUGUI engineAHex;
+    public Slider sliderA;
+    public TextMeshProUGUI engineB;
+    public TextMeshProUGUI engineBHex;
+    public Slider sliderB;
+    public TextMeshProUGUI engineC;
+    public TextMeshProUGUI engineCHex;
+    public Slider sliderC;
 
     public TextMeshProUGUI Data;
 
@@ -76,17 +76,17 @@ public class UDPManager : MonoBehaviour
         B = 125;
         C = 125;
 
-        //sliderA.value = A;
-        //sliderB.value = B;
-        //sliderC.value = C;
+        sliderA.value = A;
+        sliderB.value = B;
+        sliderC.value = C;
 
         string HexA = DecToHexMove(A);
         string HexB = DecToHexMove(B);
         string HexC = DecToHexMove(C);
 
-        //engineAHex.text = "Engine A: " + HexA;
-        //engineBHex.text = "Engine B: " + HexB;
-        //engineCHex.text = "Engine C: " + HexC;
+        engineAHex.text = "Engine A: " + HexA;
+        engineBHex.text = "Engine B: " + HexB;
+        engineCHex.text = "Engine C: " + HexC;
 
         Debug.Log("Engine A: " + HexA);
         Debug.Log("Engine B: " + HexB);
@@ -97,9 +97,9 @@ public class UDPManager : MonoBehaviour
         mUDPDATA.mAppDataField.PlayMotorB = HexB;
 
 
-        //engineA.text = ((int)sliderA.value).ToString();
-        //engineB.text = ((int)sliderB.value).ToString();
-        //engineC.text = ((int)sliderC.value).ToString();
+        engineA.text = ((int)sliderA.value).ToString();
+        engineB.text = ((int)sliderB.value).ToString();
+        engineC.text = ((int)sliderC.value).ToString();
 
         Data.text = "Data: " + mUDPDATA.GetToString();
 
@@ -136,72 +136,52 @@ public class UDPManager : MonoBehaviour
         active = true;
     }
 
-    void CalcularRotacion()
+    private void CalcularRotacion()
     {
-        Vector3 forward = vehicle.forward;
+        float normalizedX = NormalizeAngle(vehicle.transform.eulerAngles.x);
+        float normalizedZ = NormalizeAngle(vehicle.transform.eulerAngles.z);
 
-        float angleX = Vector3.SignedAngle(Vector3.forward, forward, Vector3.right);  
-        float angleY = Vector3.SignedAngle(Vector3.forward, forward, Vector3.up);     
-        float angleZ = Vector3.SignedAngle(Vector3.forward, forward, Vector3.forward); 
+        A = Mathf.Clamp(100 + normalizedX, 0, 200);
+        B = Mathf.Clamp(100 - normalizedZ, 0, 200);
+        C = Mathf.Clamp(100 + normalizedZ, 0, 200);
 
-        A = Mathf.Lerp(A, angleX + 100, Time.deltaTime * SmoothEngine);
-        B = Mathf.Lerp(B, angleY + 100, Time.deltaTime * SmoothEngine);
-        C = Mathf.Lerp(C, angleZ + 100, Time.deltaTime * SmoothEngine);
-
-        A = Mathf.Clamp(A, 0, 250);
-        B = Mathf.Clamp(B, 0, 250);
-        C = Mathf.Clamp(C, 0, 250);
-
-        if (angleX > 200)
-        {
-            A = Mathf.Lerp(A, Mathf.Clamp(C + angleX * 10, 0, 250), Time.deltaTime * SmoothEngine);
-        }
-        else if (angleX < 0)
-        {
-            A = Mathf.Lerp(A, Mathf.Clamp(C - angleX * 10, 0, 250), Time.deltaTime * SmoothEngine);
-        }
-
-        if (angleZ > 200)
-        {
-            B = Mathf.Lerp(B, Mathf.Clamp(B + angleZ * 10, 0, 250), Time.deltaTime * SmoothEngine);
-        }
-        else if (angleZ < 0)
-        {
-            B = Mathf.Lerp(B, Mathf.Clamp(B - angleZ * 10, 0, 250), Time.deltaTime * SmoothEngine);
-        }
-
-        if (angleZ > 200)
-        {
-            C = Mathf.Lerp(B, Mathf.Clamp(B + angleZ * 10, 0, 250), Time.deltaTime * SmoothEngine);
-        }
-        else if (angleZ < 0)
-        {
-            C = Mathf.Lerp(B, Mathf.Clamp(B - angleZ * 10, 0, 250), Time.deltaTime * SmoothEngine);
-        }
+        AdjustValuesBasedOnA();
     }
+
+    private void AdjustValuesBasedOnA()
+    {
+        float diffA = A - 100;
+        B = Mathf.Clamp(B - diffA, 0, 200);
+        C = Mathf.Clamp(C - diffA, 0, 200);
+    }
+
+    private float NormalizeAngle(float angle)
+    {
+        return Mathf.DeltaAngle(0, angle); 
+    }
+
 
     void FixedUpdate()
     {
         if (active)
         {
 
-            CalcularRotacion();
 
-            //sliderA.value = A;
-            //sliderB.value = B;
-            //sliderC.value = C;
+            sliderA.value = A;
+            sliderB.value = B;
+            sliderC.value = C;
 
             string HexA = DecToHexMove(A);
             string HexB = DecToHexMove(B);
             string HexC = DecToHexMove(C);
 
-            //engineAHex.text = "Engine A: " + HexA;
-            //engineBHex.text = "Engine B: " + HexB;
-            //engineCHex.text = "Engine C: " + HexC;
+            engineAHex.text = "Engine A: " + HexA;
+            engineBHex.text = "Engine B: " + HexB;
+            engineCHex.text = "Engine C: " + HexC;
 
-            Debug.Log("Cadena Hexadecimal A: " + HexA);
-            Debug.Log("Cadena Hexadecimal B: " + HexB);
-            Debug.Log("Cadena Hexadecimal C: " + HexC);
+            //Debug.Log("Cadena Hexadecimal A: " + HexA);
+            //Debug.Log("Cadena Hexadecimal B: " + HexB);
+            //Debug.Log("Cadena Hexadecimal C: " + HexC);
 
 
             mUDPDATA.mAppDataField.PlayMotorC = HexC;
@@ -209,14 +189,16 @@ public class UDPManager : MonoBehaviour
             mUDPDATA.mAppDataField.PlayMotorB = HexB;
 
 
-            //engineA.text = ((int)sliderA.value).ToString();
-            //engineB.text = ((int)sliderB.value).ToString();
-            //engineC.text = ((int)sliderC.value).ToString();
+            engineA.text = ((int)sliderA.value).ToString();
+            engineB.text = ((int)sliderB.value).ToString();
+            engineC.text = ((int)sliderC.value).ToString();
 
             Data.text = "Data: " + mUDPDATA.GetToString();
 
             sendString(mUDPDATA.GetToString());
         }
+        CalcularRotacion();
+
     }
 
     void OnApplicationQuit()
